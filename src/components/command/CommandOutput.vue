@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { handleClientCommand } from '../../service/client'
 
-const props = defineProps<{ command: string }>()
+type CommandOutputProps = { command: string }
+
+const props = defineProps<CommandOutputProps>()
 const outputCommand = ref("")
 
 watch(
@@ -11,8 +14,10 @@ watch(
   })
 
 const getCommand = (command: string) => {
-  switch(command) {
-    case 'get weather': outputCommand.value = 'weather is good, mate'
+  const args = command.split(' ')
+
+  switch(args[0]) {
+    case 'client': outputCommand.value = handleClientCommand(args)
       break;
     case '': outputCommand.value = ''
       break;
@@ -21,5 +26,5 @@ const getCommand = (command: string) => {
 }
 </script>
 <template>
-  <input class="command-input-disabled" disabled v-model="outputCommand"/>
+  <textarea class="command-input-disabled" disabled v-model="outputCommand"/>
 </template>

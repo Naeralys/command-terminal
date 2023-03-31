@@ -7,11 +7,18 @@ const command = ref()
 
 const submitCommand = ({ value }: { value: string }) => {
   command.value = value
+
+  if(value.startsWith('client background')) {
+    backgroundColor.value = value.split(' ')[2]
+  }
 }
+
+const backgroundColor = ref('#000')
+
 </script>
 
 <template>
-  <main>
+  <main :style="{ backgroundColor }">
     <CommandOutput :command="command" />
     <CommandInput @submit-command="submitCommand"/>
   </main>
@@ -31,6 +38,7 @@ main {
   padding: 10px;
   color: green;
   width: 100%;
+  max-width: 300px;
 }
 
 .command-input-disabled {
@@ -38,6 +46,9 @@ main {
   border: none;
   padding: 10px;
   color: green;
+  max-width: 300px;
+  min-width: 300px;
+  resize: none;
 }
 
 .command-input:focus {
